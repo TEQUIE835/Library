@@ -30,7 +30,9 @@ def book_loan(inv, nam):
                 book["borrowed"] +=1
                 print(f"\nBook {nam} borrowed succesfully!")
                 return
-            else: print("\nBook is out of existances")
+            else:
+                print("\nBook is out of existances")
+                return
     print(f"\nBook {nam} was not found")
 
 #Function for returning books
@@ -125,7 +127,7 @@ def menu():
     while True:
         try:
             opc = int(input("Select your option: "))
-            if 0<opc<=9:
+            if 0<opc<=10:
                 return opc
             else:
                 print("\nSelect a valid option")
