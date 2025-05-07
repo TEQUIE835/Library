@@ -7,7 +7,7 @@ inv = []
 genre = ["Fiction", "Non-fiction", "Science", "Biography", "Children"]
 
 #Adding function
-def add(inv, nam, aut, amo, gen):
+def add_book(inv, nam, aut, amo, gen):
 
     inv.append({"name": nam, "author": aut, "amount": amo, "genre": gen, "borrowed" : 0})
     print(f"\nThe book {nam} was added succesfully!")
@@ -16,7 +16,7 @@ def add(inv, nam, aut, amo, gen):
 #searching function
 def search(inv, nam):
     for book in inv:
-        if book["name"].lower() == nam.lower():
+        if book["name"].lower().strip() == nam.lower().strip():
             return book
     print(f"Book {nam} was not found")
     return None
@@ -24,7 +24,7 @@ def search(inv, nam):
 #Function for borrowing books
 def book_loan(inv, nam):
     for book in inv:
-        if book["name"].lower() == nam.lower():
+        if book["name"].lower().strip() == nam.lower().strip():
             if book["amount"] >= 1:
                 book["amount"] -= 1
                 book["borrowed"] +=1
@@ -36,40 +36,45 @@ def book_loan(inv, nam):
 #Function for returning books
 def book_return(inv, nam):
     for book in inv:
-        if book["name"].lower() == nam.lower():
+        if book["name"].lower().strip() == nam.lower().strip():
             if book["borrowed"] >= 1:
                 book["amount"] += 1
                 book ["borrowed"] -= 1
                 print(f"\nBook {nam} returned succesfully!")
                 return
             else:print(f"\nWe haven't borrowed {nam}")
+            return
     print(f"\nBook {nam} was not found")
 
 
 #function for deleting a book
 def delete_book(inv, nam):
     for i, book in enumerate(inv):
-        if book["name"].lower() == nam.lower():
+        if book["name"].lower().strip() == nam.lower().strip():
             if book["borrowed"] == 0:
                 del inv[i]
                 print(f"\nBook {nam} deleted succesfully")
                 return
             else:
                 print(f"\nWe have at least 1 copy of {nam} borrowed, please try again when they return it")
+                return
     print(f"\nBook {nam} was nos found")
 
 
 #Function to list books
 def list_books(inv, genre):
-    for gen in genre:
+    if not inv:
+            print("There are no books in the inventory")
+            return
+    for g in genre:
         for book in inv:
-            if book["genre"] == genre[gen]:
+            if book["genre"] == g:
                 print(f"""
-            Books of {book["genre"]}
-        Name: {book["name"]}
-        Author: {book["author"]}
-        Amount: {book["amount"]}\n""")
-                
+Books of {book["genre"]}
+Name: {book["name"]}
+Author: {book["author"]}
+Amount: {book["amount"]}\n""")
+                     
 #Exit function
 def exit():
     print("\nSee you soon...\n")
@@ -81,7 +86,7 @@ def exit():
 #Function to change amount of books
 def change_amount(inv, nam, newamo):
     for book in inv:
-        if book["name"].lower() == nam.lower():
+        if book["name"].lower().strip() == nam.lower().strip():
             book["amount"] = newamo
             print(f"Amount of book {nam} updated succesfully!")
             return
@@ -149,50 +154,53 @@ while True:
                         print("Insert a valid amount")
                 except ValueError:
                     print("Insert a valid amount")
-            print("""What is the genre of your book?
-                  1. Fiction
-                  2. Non-fiction
-                  3. Science
-                  4. Biography
-                  5. Children""")
+            print("""
+What is the genre of your book?
+1. Fiction
+2. Non-fiction
+3. Science
+4. Biography
+5. Children""")
             while True:
                 try:
                     genopc = int(input("Select an option: "))
                     if 1 <= genopc <= len(genre):
-                        gen = genopc - 1
-                        print(f"You selected {genre[gen]}")
+                        genopc -= 1
+                        gen = genre[genopc]
+                        print(f"\nYou selected {gen}")
                         break
                     else:
-                        print("Please insert a valid option")
+                        print("\nPlease insert a valid option\n")
                 except ValueError:
                     print("Insert a valid option")
-            inv = add(inv, nam, aut, amo, gen)
+            inv = add_book(inv, nam, aut, amo, gen)
         
         #Searching a book
         case 2:
             nam = str(input("What book are you looking for: "))
             book = search(inv, nam)
             if book:
-                print(f"""\nBook founded:
-                    Name: {book["name"]}
-                    Author: {book["author"]}
-                    Amount: {book["amount"]}
-                    Genre: {book["genre"]}
-                    Borrowed: {book["borrowed"]}""")
+                print(f"""\n
+Book founded:
+Name: {book["name"]}
+Author: {book["author"]}
+Amount: {book["amount"]}
+Genre: {book["genre"]}
+Borrowed: {book["borrowed"]}""")
         
         #Listing books
         case 3:
-            list_books(inv)
+            list_books(inv, genre)
         
         #Borrowing books
         case 4:
             nam = str(input("What book are you borrowing: "))
-            book_loan()
+            book_loan(inv,nam)
         
         #Returning books
         case 5:
             nam = str(input("What book are you returning: "))
-            book_return()
+            book_return(inv, nam)
         
         #Update amount
         case 6:
