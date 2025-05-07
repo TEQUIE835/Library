@@ -116,10 +116,11 @@ def menu():
     3. List books
     4. Borrow books
     5. Return books
-    6. Update amount
-    7. Delete book
-    8. Clear inventory
-    9. Exit
+    6. Show total books
+    7. Update amount
+    8. Delete book
+    9. Clear inventory
+    10. Exit
 --------------------------------------\n""")
     while True:
         try:
@@ -202,8 +203,18 @@ Borrowed: {book["borrowed"]}""")
             nam = str(input("What book are you returning: "))
             book_return(inv, nam)
         
-        #Update amount
+        #Show total of books
         case 6:
+            total = sum(map(lambda x: x["amount"] + x["borrowed"], inv))
+            ava = sum(map(lambda x: x["amount"], inv))
+            bor = sum(map(lambda x: x["borrowed"], inv))
+            print(f"""
+The total of books in the library are: {total}
+books available: {ava}
+books borrowed: {bor}
+""")
+        #Update amount
+        case 7:
             nam = str (input("What book you want to update amount: "))
             while True:
                 try:
@@ -217,13 +228,13 @@ Borrowed: {book["borrowed"]}""")
             change_amount(inv, nam, newamo)
 
         #Delete book
-        case 7:
+        case 8:
             nam = str(input("What book you want to delete: "))
             delete_book(inv, nam)
         #Clear inventory
-        case 8:
-            clear_inventory(inv)
-
-        #Exit
         case 9:
+            clear_inventory(inv)
+        
+        #Exit
+        case 10:
             exit()
