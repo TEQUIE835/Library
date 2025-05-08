@@ -89,9 +89,13 @@ def exit():
 def change_amount(inv, nam, newamo):
     for book in inv:
         if book["name"].lower().strip() == nam.lower().strip():
-            book["amount"] = newamo
-            print(f"Amount of book {nam} updated succesfully!")
-            return
+            if book["borrowed"] == 0:
+                book["amount"] = newamo
+                print(f"Amount of book {nam} updated succesfully!")
+                return
+            else:
+                print(f"Book {nam} has at least 1 borrowed copy, wait until return")
+                return
     print(f"Book {nam} was not found")
 
 
