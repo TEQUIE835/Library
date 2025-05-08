@@ -68,15 +68,15 @@ def list_books(inv, genre):
     if not inv:
             print("There are no books in the inventory")
             return
+    
     for g in genre:
         for book in inv:
             if book["genre"] == g:
                 print(f"""
-Books of {book["genre"]}
 Name: {book["name"]}
 Author: {book["author"]}
-Amount: {book["amount"]}\n""")
-                     
+Amount: {book["amount"]}
+Genero: {book["genre"]}""")
 #Exit function
 def exit():
     print("\nSee you soon...\n")
