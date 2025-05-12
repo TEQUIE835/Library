@@ -11,7 +11,7 @@ def add_book(inv, nam, aut, amo, gen):
     for book in inv:
         if book["name"].lower().strip() == nam.lower().strip():
             print(f"Book {nam} is already in stock")
-            return
+            return inv
     inv.append({"name": nam, "author": aut, "amount": amo, "genre": gen, "borrowed" : 0})
     print(f"\nThe book {nam} was added succesfully!")
     return inv
